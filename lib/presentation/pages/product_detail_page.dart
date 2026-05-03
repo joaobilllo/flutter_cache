@@ -61,7 +61,7 @@ class ProductDetailPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   const Text(
-                    'Observacao didatica: ao voltar desta tela, a lista principal sera recarregada por completo.',
+                    'Observacao didatica: ao voltar desta tela, a lista principal mantem o cache local - sem nova chamada de rede.',
                   ),
                 ],
               ),

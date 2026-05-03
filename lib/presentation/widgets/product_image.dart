@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ProductImage extends StatelessWidget {
@@ -18,20 +19,23 @@ class ProductImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget image = Image.network(
-      url,
+    Widget image = CachedNetworkImage(
+      imageUrl: url,
       width: width,
       height: height,
       fit: fit,
-      errorBuilder: (context, error, stackTrace) {
-        return Container(
-          width: width,
-          height: height,
-          color: Colors.grey.shade300,
-          alignment: Alignment.center,
-          child: const Icon(Icons.broken_image),
-        );
-      },
+      placeholder: (context, _) => Container(
+        width: width,
+        height: height,
+        color: Colors.grey.shade200,
+      ),
+      errorWidget: (context, _, __) => Container(
+        width: width,
+        height: height,
+        color: Colors.grey.shade300,
+        alignment: Alignment.center,
+        child: const Icon(Icons.broken_image),
+      ),
     );
 
     if (borderRadius != null) {

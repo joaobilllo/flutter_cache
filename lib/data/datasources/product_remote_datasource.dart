@@ -15,7 +15,9 @@ class ProductRemoteDatasource {
 
   Future<List<ProductDto>> fetchProducts({int limit = 30}) async {
     final uri = Uri.parse('$baseUrl/products?limit=$limit');
-    final response = await client.get(uri);
+    final response = await client.get(uri).timeout(
+          const Duration(seconds: 10),
+        );
 
     if (response.statusCode != 200) {
       throw Exception('Erro ao buscar produtos');

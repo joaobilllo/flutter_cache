@@ -34,6 +34,19 @@ class ProductDto {
     );
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'category': category,
+      'price': price,
+      'rating': rating,
+      'thumbnail': thumbnail,
+      'images': images,
+    };
+  }
+
   Product toEntity() {
     return Product(
       id: id,

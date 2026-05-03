@@ -1,4 +1,3 @@
-import '../entities/product.dart';
 import '../repositories/product_repository.dart';
 
 class GetProducts {
@@ -6,7 +5,13 @@ class GetProducts {
 
   const GetProducts({required this.repository});
 
-  Future<List<Product>> call({int limit = 30}) {
-    return repository.getProducts(limit: limit);
+  Future<ProductsResult> call({
+    int limit = 30,
+    bool forceRefresh = false,
+  }) {
+    return repository.getProducts(
+      limit: limit,
+      forceRefresh: forceRefresh,
+    );
   }
 }
