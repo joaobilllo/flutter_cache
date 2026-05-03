@@ -52,6 +52,40 @@ Ao realizar esta atividade, espera-se que sejam desenvolvidas as seguintes açõ
 6. Justificar tecnicamente por que essas mudanças melhoram o sistema.
 7. Apresentar o resultado final de forma organizada.
 
+## Estrutura Atual (resumo)
+
+Estrutura atual do projeto:
+
+```
+lib/
+	main.dart
+docs/
+test/
+android/
+ios/
+web/
+macos/
+windows/
+linux/
+```
+
+Observacoes:
+- lib/main.dart: concentra UI, modelo, requisicoes HTTP e regras.
+- docs/: documentos da atividade.
+- pastas de plataforma: scaffolding do Flutter.
+
+## Problemas Identificados (resumo)
+
+1. Acoplamento excessivo:
+	- UI chamando API diretamente (http + jsonDecode no widget).
+	- Modelo, parsing e regras no mesmo arquivo.
+2. Falta de separacao entre UI, dados e regras:
+	- Sem camada de dados ou dominio.
+	- Estado e fluxo de carregamento no State do widget.
+3. Repeticao de logica:
+	- Tratamento de erro e carregamento espalhados.
+	- Logica de imagens repetida em lista e detalhe.
+
 ## Resultado Esperado
 
 Como resultado, espera-se uma versão modificada da aplicação acompanhada de uma análise objetiva dos problemas encontrados, de uma descrição das mudanças implementadas e de uma justificativa técnica que relacione cada alteração aos problemas identificados no projeto original.
