@@ -5,7 +5,10 @@
 
 ## Estrutura atual (resumo)
 - lib/
-	- main.dart: contem toda a aplicacao (UI, modelo, requisicoes HTTP e regras).
+	- main.dart: composicao de dependencias e bootstrap da app.
+	- data/: acesso remoto, DTOs e repositorios.
+	- domain/: entidades, contratos e casos de uso.
+	- presentation/: UI, view models e widgets reutilizaveis.
 - docs/: textos das tarefas e analises.
 - test/: testes padrao do template.
 - android/, ios/, web/, macos/, windows/, linux/: scaffolding multiplataforma do Flutter.
@@ -33,3 +36,10 @@
 - Mover parsing JSON para modelos em data/ e expor entidades limpas no dominio.
 - Adotar um gerenciador de estado simples (ChangeNotifier, ValueNotifier) para separar fluxo da UI.
 - Centralizar logica de imagens (widget reutilizavel com placeholder/erro).
+
+## Mudancas realizadas
+- Separacao completa por camadas em lib/ (data, domain, presentation).
+- UI movida para presentation/pages e estado para presentation/viewmodels.
+- Acesso remoto e parsing movidos para data/ (datasource + DTO).
+- Contratos e entidades isolados em domain/.
+- Widget de imagem reutilizavel para evitar repeticao.
