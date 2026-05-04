@@ -101,3 +101,119 @@ A análise da atividade deve considerar principalmente a capacidade de:
 
 > Esta atividade não se limita à implementação de código. Seu propósito é desenvolver análise, diagnóstico, evolução arquitetural e argumentação técnica sobre decisões de projeto em aplicações interativas.
 
+
+## Tasks
+
+Organizacao do trabalho registrada no Jira, com tasks para completar a atividade e acompanhar o progresso.
+
+### 01 - Latencia: diagnostico e evidencias (Luan Muhlbeier)
+- Objetivo: encontrar onde o app fica lento e registrar provas simples (passos e prints).
+- Ambiente de teste:
+	- Dispositivo/Emulador: (ex.: iPhone 12, Pixel 5, emulador)
+	- SO e versao: (ex.: iOS 17.2, Android 14)
+	- Versao do Flutter:
+	- Modo de execucao: debug / profile / release
+- Passos para reproducao:
+	- Abrir a tela X.
+	- Tocar no botao Y.
+	- Aguardar Z segundos e observar o atraso.
+- Evidencias:
+	- Tela/fluxo afetado:
+	- Tempo percebido (aproximado): (ex.: 3 a 5s)
+	- Prints/gravacao: (adicione o arquivo ou link)
+- Hipoteses tecnicas:
+	- Possiveis causas (ex.: chamadas repetidas, parsing pesado, imagens grandes):
+- Impacto para o usuario:
+	- Explique o efeito (ex.: usuario acha que travou, abandona a tela).
+- Sugestoes iniciais:
+	- Ideias de melhoria (nao precisa implementar aqui).
+
+### 02 - Responsividade e UX (Matheus Akio)
+- Objetivo: anotar problemas de layout e usabilidade em telas diferentes.
+- Dispositivos/tamanhos testados:
+	- Ex.: 360x640, 412x915, tablet 768x1024
+- Problemas encontrados:
+	- Tela/fluxo:
+	- O que esta errado: (ex.: botao corta, texto estoura)
+	- Como reproduzir: (passos simples)
+- Evidencias:
+	- Prints/gravacao: (adicione o arquivo ou link)
+- Impacto para o usuario:
+	- Ex.: quebra de layout, texto ilegivel, botao inacessivel.
+- Sugestoes iniciais:
+	- Ajustes possiveis (ex.: LayoutBuilder, MediaQuery, Expanded, FittedBox).
+
+### 03 - Arquitetura e organizacao (Joao Victor Cassula Billo)
+- Objetivo: ver se o codigo esta bem separado e facil de manter.
+- Estrutura atual (resumo):
+	- Liste as pastas principais e o que cada uma faz.
+- Problemas identificados:
+	- Acoplamento excessivo:
+	- Falta de separacao entre UI, dados e regras:
+	- Repeticao de logica:
+- Impacto tecnico:
+	- Explique o impacto (ex.: dificil testar, quebrar sem querer, refatorar demora).
+- Sugestoes iniciais:
+	- Possiveis reorganizacoes (ex.: data/domain/presentation).
+	- Uso de services/repositories.
+
+### 04 - Cache e desempenho (Arthur Felipe)
+- Objetivo: propor cache para reduzir latencia e repeticao de chamadas.
+- Observacoes:
+	- Onde o app mais repete requisicoes ou recomputa dados:
+- Proposta de cache:
+	- Tipo: memoria / disco / ambos
+	- Ferramentas sugeridas (ex.: shared_preferences, hive, sqlite)
+	- Onde aplicar:
+- Trade-offs:
+	- Custo de armazenamento:
+	- Consistencia dos dados:
+	- Complexidade adicional:
+- Beneficios esperados:
+	- Reducao de latencia:
+	- Melhor responsividade:
+
+### 05 - Mudancas e justificativas tecnicas (Joao Victor Cassula Billo)
+- Objetivo: registrar mudancas e explicar por que cada uma melhora o projeto.
+- Mudancas realizadas:
+	1. Arquitetura em camadas
+		- Criado modulo domain com entidades (Product), contratos (ProductRepository) e casos de uso (GetProducts).
+		- Criado modulo data com DTOs, datasource remoto e repositorio concreto.
+		- Criado modulo presentation com pages, viewmodel e widgets reutilizaveis.
+		- main.dart ficou apenas com bootstrap e composicao de dependencias.
+	2. Cache de dados com persistencia local
+		- Adicionado ProductLocalDatasource usando SharedPreferences.
+		- Implementado TTL de 2 minutos e politica network-first.
+		- Fallback offline: se falhar rede, usa cache antigo quando existir.
+	3. Cache de imagens e placeholders
+		- ProductImage migrou para CachedNetworkImage.
+		- Placeholder simples e erro padrao para manter layout estavel.
+	4. Melhorias no fluxo de carregamento
+		- Loading inline quando ja existe lista em tela (LinearProgressIndicator).
+		- Banner de modo offline exibindo a idade do cache.
+		- Removido reload ao voltar da tela de detalhes.
+	5. Robustez de requisicoes
+		- Timeout de 10s nas chamadas HTTP.
+		- Bloqueio de chamadas paralelas no ViewModel (controle de concorrencia).
+	6. Responsividade basica
+		- Lista virou GridView com maxCrossAxisExtent para adaptar a largura.
+- Justificativas tecnicas:
+	- Separacao em camadas reduz acoplamento entre UI e infraestrutura, permitindo evolucao de regra de negocio sem reescrever widgets.
+	- DTOs isolam parsing JSON e evitam que a UI dependa de formato de API, reduzindo impacto de mudancas no backend.
+	- Caso de uso centraliza a regra de carregamento, facilitando teste unitario sem widget test.
+	- Cache local evita novas chamadas em navegacao repetida e remove a latencia artificial percebida pelo usuario.
+	- TTL curto equilibra frescor e performance, evitando dados desatualizados por longos periodos.
+	- Fallback offline garante continuidade de uso quando a rede falha, melhorando confiabilidade.
+	- CachedNetworkImage reduz re-download e estabiliza layout com placeholder, evitando piscadas em lista.
+	- Loading inline evita tela vazia durante revalidacao e melhora percepcao de responsividade.
+	- Remover reload pos-detalhes elimina chamada desnecessaria e reduz consumo de rede.
+	- Timeout e bloqueio de concorrencia evitam fila de requisicoes e estados inconsistentes.
+	- Grid responsivo melhora leitura em telas grandes sem quebrar telas pequenas.
+- Impacto esperado:
+	- Performance: reducao de round-trips, uso de cache local e cache de imagens em disco, menor custo de renderizacao.
+	- Manutenibilidade: separacao por camadas, contratos explicitos, facil substituicao de fonte de dados.
+	- Experiencia do usuario: menos bloqueios, feedback de offline, navegacao mais fluida e previsivel.
+- Referencias:
+	- Flutter docs: shared_preferences.
+	- Flutter docs: cached_network_image.
+
