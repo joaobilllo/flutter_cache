@@ -99,31 +99,49 @@ class _ProductListPageState extends State<ProductListPage> {
                   if (viewModel.isOffline)
                     OfflineBanner(cachedAt: viewModel.lastSyncedAt),
                   Expanded(
-                    child: ListView.separated(
-                      itemCount: viewModel.products.length,
-                      separatorBuilder: (_, __) => const Divider(height: 1),
-                      itemBuilder: (context, index) {
-                        final product = viewModel.products[index];
-
-                        return ListTile(
-                          contentPadding: const EdgeInsets.all(12),
-                          leading: ProductImage(
-                            url: product.thumbnail,
-                            width: 72,
-                            height: 72,
-                            borderRadius: BorderRadius.circular(8),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        return GridView.builder(
+                          padding: const EdgeInsets.all(8),
+                          gridDelegate:
+                              SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 400,
+                            mainAxisExtent: 96,
+                            crossAxisSpacing: 8,
+                            mainAxisSpacing: 8,
                           ),
-                          title: Text(
-                            product.title,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          subtitle: Text(
-                            '${product.category} • R\$ ${product.price.toStringAsFixed(2)}',
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          onTap: () => openDetails(product),
+                          itemCount: viewModel.products.length,
+                          itemBuilder: (context, index) {
+                            final product = viewModel.products[index];
+                            return Card(
+                              elevation: 1,
+                              margin: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: ListTile(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 8),
+                                leading: ProductImage(
+                                  url: product.thumbnail,
+                                  width: 64,
+                                  height: 64,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                title: Text(
+                                  product.title,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                subtitle: Text(
+                                  '${product.category} • R\$ ${product.price.toStringAsFixed(2)}',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                onTap: () => openDetails(product),
+                              ),
+                            );
+                          },
                         );
                       },
                     ),
