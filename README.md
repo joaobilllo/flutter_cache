@@ -1,5 +1,7 @@
 # Flutter Problemático - Catálogo com Latência e Sem Cache
 
+Os documentos detalhados e o resumo geral da atividade estao na pasta docs/.
+
 Projeto didático propositalmente ruim para identificação e correção de problemas de:
 
 - latência percebida
