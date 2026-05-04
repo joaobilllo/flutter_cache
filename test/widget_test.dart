@@ -69,7 +69,7 @@ void main() {
     await tester.pump();
 
     expect(find.text('Catalogo Problematico'), findsOneWidget);
-    expect(find.byType(ListView), findsOneWidget);
+    expect(find.byType(GridView), findsOneWidget);
   });
 
   testWidgets('OfflineBanner aparece quando status do repositorio e offline',
